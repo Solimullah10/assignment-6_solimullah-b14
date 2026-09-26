@@ -153,6 +153,17 @@ export default function MyPlanPage() {
                       {isDone ? "✓ Done" : "Mark as Done"}
                     </button>
                   )}
+
+                  <button
+                    onClick={() =>
+                      activeTab === "plan"
+                        ? removeFromPlan(item.id)
+                        : removeFromSaved(item.id)
+                    }
+                    className="text-zinc-500 hover:text-red-500 text-sm font-bold px-2 transition"
+                  >
+                    ✕
+                  </button>
                 </div>
               </div>
             );
