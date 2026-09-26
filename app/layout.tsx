@@ -9,7 +9,11 @@ export const metadata = {
   description: "Train with intent. Log every set.",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body className="bg-[#0b0c0e] text-white flex flex-col min-h-screen">

@@ -3,8 +3,19 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import WorkoutCard from "@/components/WorkoutCard";
 
+// Workout ডাটার জন্য Type/Interface তৈরি করা হলো
+interface Workout {
+  id: string | number;
+  duration?: string | number;
+  caloriesBurned?: string | number;
+  calories?: string | number;
+  rating?: number;
+  [key: string]: any; // অন্যান্য যেকোনো অতিরিক্ত প্রপার্টির জন্য
+}
+
 export default function HomePage() {
-  const [workouts, setWorkouts] = useState([]);
+  // useState-এ explicitly <Workout[]> টাইপ ডিফাইন করা হলো
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("duration");
 
@@ -25,13 +36,16 @@ export default function HomePage() {
 
   const sortedWorkouts = [...workouts].sort((a, b) => {
     if (sortBy === "duration")
-      return parseInt(a.duration, 10) - parseInt(b.duration, 10);
+      return (
+        parseInt(String(a.duration || 0), 10) -
+        parseInt(String(b.duration || 0), 10)
+      );
     if (sortBy === "calories") {
-      const calA = parseInt(a.caloriesBurned || a.calories || 0, 10);
-      const calB = parseInt(b.caloriesBurned || b.calories || 0, 10);
+      const calA = parseInt(String(a.caloriesBurned || a.calories || 0), 10);
+      const calB = parseInt(String(b.caloriesBurned || b.calories || 0), 10);
       return calA - calB;
     }
-    if (sortBy === "rating") return b.rating - a.rating;
+    if (sortBy === "rating") return (b.rating || 0) - (a.rating || 0);
     return 0;
   });
 
@@ -68,7 +82,7 @@ export default function HomePage() {
               height={320}
               className="object-contain drop-shadow-[0_10px_20px_rgba(204,255,0,0.15)]"
               priority
-            ></Image>
+            />
           </div>
         </div>
       </section>
